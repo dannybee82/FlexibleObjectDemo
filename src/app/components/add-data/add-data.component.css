@@ -1,0 +1,3 @@
+input[type="text"] .ng-invald {
+    border: 1px solid red;
+}
