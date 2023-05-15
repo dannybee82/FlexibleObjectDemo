@@ -8,7 +8,7 @@
                 <label class="form-label fw-bold mt-1">Propertyname:</label>                
             </div>
             <div class="col-3">
-                <input type="text" class="form-control" name="addPropertyName" [(ngModel)]="this.addPropertyName" required autocomplete="off" [disabled]="this.propertyAlreadyExists">
+                <input type="text" class="form-control" id="addPropertyName" name="addPropertyName" [(ngModel)]="this.addPropertyName" required autocomplete="off" [disabled]="this.propertyAlreadyExists">
             </div>            
         </div>
         <div class="row mt-2">
@@ -16,7 +16,7 @@
                 <label class="form-label fw-bold mt-1">Value(s):</label>                
             </div>
             <div class="col-3">
-                <input type="text" class="form-control" name="addValue" [(ngModel)]="this.addValue" required autocomplete="off" [disabled]="this.propertyAlreadyExists">
+                <input type="text" class="form-control" id="addValue" name="addValue" [(ngModel)]="this.addValue" required autocomplete="off" [disabled]="this.propertyAlreadyExists">
             </div>
             <div class="col-1">
                 <label class="form-label fw-bold mt-1">Type:</label>                
