@@ -31,8 +31,8 @@ export class FlexibleObject {
      * 
      */
 
-    setStringValue(propertyName: string, value: string) : void {
-        this._flexibleObject[propertyName] = value;
+    setStringValue(propertyName: string, value: string | null) : void {
+        this._flexibleObject[propertyName] = (value === undefined) ? null : value;
     }
 
     /**
@@ -40,8 +40,8 @@ export class FlexibleObject {
      * 
      */
 
-    setStringArray(propertyName: string, value: string[]) : void {
-        this._flexibleObject[propertyName] = value;
+    setStringArray(propertyName: string, value: string[] | null) : void {
+        this._flexibleObject[propertyName] = (value === undefined) ? null : value;
     }
 
      /**
@@ -49,8 +49,8 @@ export class FlexibleObject {
      * 
      */
 
-    setNumberValue(propertyName: string, value: number) : void {
-        this._flexibleObject[propertyName] = value;
+    setNumberValue(propertyName: string, value: number | null) : void {
+        this._flexibleObject[propertyName] = (value === undefined) ? null : value;
     }
 
     /**
@@ -58,8 +58,8 @@ export class FlexibleObject {
      * 
      */
 
-    setNumberArray(propertyName: string, value: number[]) : void {
-        this._flexibleObject[propertyName] = value;
+    setNumberArray(propertyName: string, value: number[] | null) : void {
+        this._flexibleObject[propertyName] = (value === undefined) ? null : value;
     }
 
     /**
@@ -67,8 +67,8 @@ export class FlexibleObject {
      * 
      */
 
-    setBooleanValue(propertyName: string, value: boolean) : void {
-        this._flexibleObject[propertyName] = value;
+    setBooleanValue(propertyName: string, value: boolean | null) : void {
+        this._flexibleObject[propertyName] = (value === undefined) ? null : value;
     }
 
     /**
@@ -76,8 +76,8 @@ export class FlexibleObject {
      * 
      */
 
-    setBooleanArray(propertyName: string, value: boolean[]) : void {
-        this._flexibleObject[propertyName] = value;
+    setBooleanArray(propertyName: string, value: boolean[] | null) : void {
+        this._flexibleObject[propertyName] = (value === undefined) ? null : value;
     }
 
     /**
@@ -85,8 +85,8 @@ export class FlexibleObject {
      * 
      */
 
-    setAnyValue(propertyName: string, value: any) : void {
-        this._flexibleObject[propertyName] = value;
+    setAnyValue(propertyName: string, value: any | null) : void {
+        this._flexibleObject[propertyName] = (value === undefined) ? null : value;
     }
 
     /**
@@ -94,8 +94,8 @@ export class FlexibleObject {
      * 
      */
 
-    setAnyArray(propertyName: string, value: any[]) : void {
-        this._flexibleObject[propertyName] = value;
+    setAnyArray(propertyName: string, value: any[] | null) : void {
+        this._flexibleObject[propertyName] = (value === undefined) ? null : value;
     }
 
     /**
@@ -103,8 +103,8 @@ export class FlexibleObject {
      * 
      */
 
-    setObject(propertyName: string, value: object) : void {
-        this._flexibleObject[propertyName] = value;
+    setObject(propertyName: string, value: object | null) : void {
+        this._flexibleObject[propertyName] = (value === undefined) ? null : value;
     }
 
     /**
@@ -112,7 +112,7 @@ export class FlexibleObject {
      * 
      */
 
-    setValue(propertyName: string, value: any, type: ALLOWED_DATA_TYPES) : void {
+    setValue(propertyName: string, value: any | null, type: ALLOWED_DATA_TYPES) : void {
         switch(type) {
             case ALLOWED_DATA_TYPES.STRING_VALUE:
                 this.setStringValue(propertyName, value);
@@ -157,7 +157,7 @@ export class FlexibleObject {
     /**
      * getType() - Method to get the property type (derived from it's value).
      * 
-     * @param isVerbose = optional parameter. Can return: String, Number, Boolean, Object, Array String, Array Number, Array Boolean, Array Unknown.
+     * @param isVerbose = optional parameter. Can return: String, Number, Boolean, Object, Array String, Array Number, Array Boolean, Array Empty.
      * 
      */
 
@@ -173,7 +173,7 @@ export class FlexibleObject {
 
                 if(type === 'Array') {
                     if(value.length == 0) {
-                        type += " Unknown";
+                        type += " Empty";
                     } else {
                         type += " " + Object.prototype.toString.call(value[0]).replace(regEx, "");
                     }
@@ -187,6 +187,23 @@ export class FlexibleObject {
     }
 
     /**
+     * isExpectedType() : Tests if the property is of the expected types.
+    * 
+    * @param types = Use: String, Number, Boolean, Object, Array String, Array Number, Array Boolean, Array Unknown, or Null
+     * 
+     */
+
+    isExpectedType(propertyName: string, types: string[], lowerCase?: boolean) : boolean {
+        let typeOfProperty: string | undefined = this.getType(propertyName, true);
+
+        if(lowerCase) {
+            typeOfProperty = typeOfProperty?.toLowerCase();
+        }
+
+        return (types.indexOf(typeOfProperty ?? '') > -1) ? true : false;
+    }
+
+    /**
      * removeProperty() - This method removes a property, when it exists.
      * 
      */
@@ -195,6 +212,15 @@ export class FlexibleObject {
         if(this.hasProperty(propertyName)) {
             delete this._flexibleObject[propertyName];
         }
+    }
+
+    /**
+     * clearAll() - This method clears all properties from the Flexible Object.
+     * 
+     */
+
+    clearAll() : void {
+        this._flexibleObject = {};
     }
 
     /**
@@ -226,8 +252,8 @@ export class FlexibleObject {
      * 
      */
 
-    getStringValue(propertyName: string) : string {
-        if(this.hasProperty(propertyName) && this.getType(propertyName)?.toLowerCase() === '[object string]') {
+    getStringValue(propertyName: string) : string | null {
+        if(this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["string", "null"], true)) {
             return this._flexibleObject[propertyName];
         }
 
@@ -239,8 +265,8 @@ export class FlexibleObject {
      * 
      */
 
-    getStringArray(propertyName: string) : string[] | undefined {
-        if(this.hasProperty(propertyName) && this.getType(propertyName)?.toLowerCase() === '[object array]') {
+    getStringArray(propertyName: string) : string[] | undefined | null {
+        if(this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["array string", "array empty", "null"], true)) {
             return this._flexibleObject[propertyName];
         }
 
@@ -252,8 +278,8 @@ export class FlexibleObject {
      * 
      */
 
-    getNumberValue(propertyName: string, defaultValue?: number) : number {
-        if(this.hasProperty(propertyName) && this.getType(propertyName)?.toLowerCase() === '[object number]') {
+    getNumberValue(propertyName: string, defaultValue?: number) : number | null {
+        if(this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["number", "null"], true)) {
             return this._flexibleObject[propertyName];
         }
 
@@ -265,8 +291,8 @@ export class FlexibleObject {
      * 
      */
 
-    getNumberArray(propertyName: string) : number[] | undefined {
-        if(this.hasProperty(propertyName) && this.getType(propertyName)?.toLowerCase() === '[object array]') {
+    getNumberArray(propertyName: string) : number[] | undefined | null {
+        if(this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["array number", "array empty", "null"], true)) {
             return this._flexibleObject[propertyName];
         }
 
@@ -278,8 +304,8 @@ export class FlexibleObject {
      * 
      */
 
-    getBooleanValue(propertyName: string, defaultValue?: boolean) : boolean {
-        if(this.hasProperty(propertyName) && this.getType(propertyName)?.toLowerCase() === '[object boolean]') {
+    getBooleanValue(propertyName: string, defaultValue?: boolean) : boolean | null {
+        if(this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["boolean", "null"], true)) {
             return this._flexibleObject[propertyName];
         }
 
@@ -291,8 +317,8 @@ export class FlexibleObject {
      * 
      */
 
-    getBooleanArray(propertyName: string) : boolean[] | undefined {
-        if(this.hasProperty(propertyName) && this.getType(propertyName)?.toLowerCase() === '[object array]') {
+    getBooleanArray(propertyName: string) : boolean[] | undefined | null {
+        if(this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["array boolean", "array empty", "null"], true)) {
             return this._flexibleObject[propertyName];
         }
 
@@ -304,7 +330,7 @@ export class FlexibleObject {
      * 
      */
 
-    getAnyValue(propertyName: string, defaultValue?: any) : any {
+    getAnyValue(propertyName: string, defaultValue?: any) : any | null {
         if(this.hasProperty(propertyName)) {
             return this._flexibleObject[propertyName];
         }
@@ -317,7 +343,7 @@ export class FlexibleObject {
      * 
      */
 
-    getAnyArray(propertyName: string) : any[] | undefined {
+    getAnyArray(propertyName: string) : any[] | undefined | null {
         if(this.hasProperty(propertyName)) {
             return this._flexibleObject[propertyName];
         }
@@ -330,8 +356,8 @@ export class FlexibleObject {
      * 
      */
 
-    getObject(propertyName: string) : object | undefined {
-        if(this.hasProperty(propertyName) && this.getType(propertyName)?.toLowerCase() === '[object object]') {
+    getObject(propertyName: string) : object | undefined | null {
+        if(this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["object", "null"], true)) {
             return this._flexibleObject[propertyName];
         }
 
@@ -343,7 +369,7 @@ export class FlexibleObject {
      * 
      */
 
-    getValue(propertyName: string, type: ALLOWED_DATA_TYPES) : any | undefined {
+    getValue(propertyName: string, type: ALLOWED_DATA_TYPES) : any | undefined | null {
         if(this.hasProperty(propertyName) ) {
             switch(type) {
                 case ALLOWED_DATA_TYPES.STRING_VALUE: 

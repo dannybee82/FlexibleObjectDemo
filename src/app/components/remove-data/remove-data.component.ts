@@ -30,15 +30,6 @@ export class RemoveDataComponent {
     });
   }
 
-  show() : void {
-    this.propertyNames, this.types = [];
-
-    let flexibleObject: FlexibleObject = this.dataRepositoryService.getFlexibleObject();
-    this.propertyNames = flexibleObject.getObjectKeys();
-    this.getTypes();
-    this.isVisible = (this.propertyNames?.length ?? 0 > 0) ? true : false;
-  }
-
   remove(index: number) : void {
     if(this.propertyNames != undefined) {
       this.dataRepositoryService.removeProperty(this.propertyNames[index]);  
@@ -51,6 +42,15 @@ export class RemoveDataComponent {
         this.types?.push( this.dataRepositoryService.getTypeOfProperty(item) ?? "Unknown" );
       });
     }
+  }
+
+  private show() : void {
+    this.propertyNames, this.types = [];
+
+    let flexibleObject: FlexibleObject = this.dataRepositoryService.getFlexibleObject();
+    this.propertyNames = flexibleObject.getObjectKeys();
+    this.getTypes();
+    this.isVisible = (this.propertyNames?.length ?? 0 > 0) ? true : false;
   }
 
 }

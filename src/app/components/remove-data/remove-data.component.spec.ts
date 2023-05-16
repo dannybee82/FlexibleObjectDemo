@@ -64,6 +64,7 @@ describe('RemoveDataComponent', () => {
 
   it('test: show contents of flexible object - component & template', fakeAsync(async() => {
     listener.next(true);
+    //@ts-ignore
     component.show();
     fixture.detectChanges();
     tick();
@@ -88,6 +89,7 @@ describe('RemoveDataComponent', () => {
 
   it('Test remove button', fakeAsync(async() => {
     listener.next(true);
+    //@ts-ignore
     component.show();
     fixture.detectChanges();
     tick();

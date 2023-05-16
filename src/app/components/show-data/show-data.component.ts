@@ -15,19 +15,22 @@ export class ShowDataComponent {
 
   public isvisible: boolean = false;
 
-  public showData?: FlexibleObject;
+  public flexibleObject?: FlexibleObject;
   
   constructor(private dataRepositoryService: DataRepositoryService) {
     //listen for changes.
     this.dataRepositoryService.getUpdateView().subscribe({
       next: (result) => {
         if(result) {
-          this.showData = this.dataRepositoryService.getFlexibleObject();
-          this.isvisible = (this.showData.hasContents()) ? true : false;
+          this.show();
         }
       }
     });
+  }
 
+  private show() : void {
+    this.flexibleObject = this.dataRepositoryService.getFlexibleObject();
+    this.isvisible = (this.flexibleObject.hasContents()) ? true : false;
   }
 
 }

@@ -106,7 +106,7 @@ export class AddDataComponent {
       case 0:
         return  value;
       case 1:
-        const regEx: RegExp = /^[\d]+$/g;
+        const regEx: RegExp = /^\-{0,1}[\d]+$/g;
         return (value.match(regEx)) ? parseInt(value) : undefined;
       case 2:
         return (value === true || value === false) ? value : (value.trim() === 'true') ? true : (value.trim() === 'false') ? false : undefined;
