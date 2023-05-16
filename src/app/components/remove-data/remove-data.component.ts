@@ -14,7 +14,7 @@ import { FlexibleObject } from 'src/app/flexible-object/FlexibleObject';
 
 export class RemoveDataComponent {
 
-  public keys: string[] | undefined = [];
+  public propertyNames: string[] | undefined = [];
   public types: string[] | undefined = [];
 
   public isVisible: boolean = false;
@@ -24,27 +24,30 @@ export class RemoveDataComponent {
     this.dataRepositoryService.getUpdateView().subscribe({
       next: (result) => {
         if(result) {
-          this.keys = [];
-          this.types = [];
-
-          let flexibleObject: FlexibleObject = this.dataRepositoryService.getFlexibleObject();
-          this.keys = flexibleObject.getObjectKeys();
-          this.getTypes();
-          this.isVisible = (this.keys?.length ?? 0 > 0) ? true : false;
+          this.show();
         }
       }
     });
   }
 
+  show() : void {
+    this.propertyNames, this.types = [];
+
+    let flexibleObject: FlexibleObject = this.dataRepositoryService.getFlexibleObject();
+    this.propertyNames = flexibleObject.getObjectKeys();
+    this.getTypes();
+    this.isVisible = (this.propertyNames?.length ?? 0 > 0) ? true : false;
+  }
+
   remove(index: number) : void {
-    if(this.keys != undefined) {
-      this.dataRepositoryService.removeProperty(this.keys[index]);  
+    if(this.propertyNames != undefined) {
+      this.dataRepositoryService.removeProperty(this.propertyNames[index]);  
     }    
   }
 
   private getTypes() : void {
-    if(this.keys != undefined) {
-      this.keys.forEach(item => {
+    if(this.propertyNames != undefined) {
+      this.propertyNames.forEach(item => {
         this.types?.push( this.dataRepositoryService.getTypeOfProperty(item) ?? "Unknown" );
       });
     }

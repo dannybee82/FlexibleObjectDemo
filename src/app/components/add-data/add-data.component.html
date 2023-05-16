@@ -8,7 +8,7 @@
                 <label class="form-label fw-bold mt-1">Propertyname:</label>                
             </div>
             <div class="col-3">
-                <input type="text" class="form-control" id="addPropertyName" name="addPropertyName" [(ngModel)]="this.addPropertyName" required autocomplete="off" [disabled]="this.propertyAlreadyExists">
+                <input type="text" class="form-control" id="addPropertyName" name="addPropertyName" [(ngModel)]="this.propertyName" required autocomplete="off" [disabled]="this.propertyAlreadyExists">
             </div>            
         </div>
         <div class="row mt-2">
@@ -16,20 +16,20 @@
                 <label class="form-label fw-bold mt-1">Value(s):</label>                
             </div>
             <div class="col-3">
-                <input type="text" class="form-control" id="addValue" name="addValue" [(ngModel)]="this.addValue" required autocomplete="off" [disabled]="this.propertyAlreadyExists">
+                <input type="text" class="form-control" id="addValue" name="addValue" [(ngModel)]="this.propertyValue" required autocomplete="off" [disabled]="this.propertyAlreadyExists">
             </div>
             <div class="col-1">
                 <label class="form-label fw-bold mt-1">Type:</label>                
             </div>
             <div class="col-auto">
-                <select class="form-select" (change)="this.changeOption($any($event).target.value)" [disabled]="this.propertyAlreadyExists">
-                    <ng-container *ngFor="let option of this.selectItems; let index = index">
+                <select class="form-select" (change)="this.changeOption($any($event).target.selectedIndex)" [disabled]="this.propertyAlreadyExists">
+                    <ng-container *ngFor="let option of this.selectOptions; let index = index">
                         <option [value]="index">{{ option }}</option>
                     </ng-container>
                 </select>
             </div>
             <div class="col-4 pt-1">
-                <span>{{ this.itemsTooltips[this.itemSelected] }}</span>
+                <span>{{ this.selectOptionsToolTips[this.itemSelected] }}</span>
             </div>
         </div>
         <div class="row mt-2">
@@ -39,7 +39,7 @@
                     <span class="ms-2">Add Data</span>
                 </button>
             </div>
-            <div class="col-auto p-2 bg-danger text-light rounded" *ngIf="(form.invalid && form.submitted) || !typeIsValid">
+            <div class="col-auto p-2 bg-danger text-light rounded" *ngIf="this.hasError">
                 {{ this.error }}
             </div>
             <div class="col-auto" *ngIf="this.propertyAlreadyExists">

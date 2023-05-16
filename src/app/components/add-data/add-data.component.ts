@@ -11,13 +11,13 @@ import { DataRepositoryService } from 'src/app/services/data-repository.service'
 })
 export class AddDataComponent {
 
-  public addPropertyName: string = "";
-  public addValue: string = "";
+  public propertyName: string = "";
+  public propertyValue: string = "";
   
   public itemSelected: number = 0;
 
-  public selectItems: string[] = ["String", "Number", "Boolean", "String Array", "Number Array", "Boolean Array", "Object"];
-  public itemsTooltips: string[] = [
+  public selectOptions: string[] = ["String", "Number", "Boolean", "String Array", "Number Array", "Boolean Array", "Object"];
+  public selectOptionsToolTips: string[] = [
     "Enter a String value e.g.: pear",
     "Enter a Number value e.g.: 3",
     "Enter a Boolean value e.g: true or false",
@@ -27,44 +27,37 @@ export class AddDataComponent {
     "Object - place properties in JSON between braces e.g.: {\"fruit\": \"apple\"}"
   ];
 
-  public typeIsValid: boolean = true;
+  public typeIsValid: boolean = false;
   public propertyAlreadyExists: boolean = false;
 
+  public hasError: boolean = false;
   public error: string = "";
 
   constructor(private dataRepositoryService: DataRepositoryService) {}
 
-  changeOption(value: string) : void {
-    let parsed: number = parseInt(value);
-    this.itemSelected = parsed;
+  changeOption(value: number) : void {
+    this.itemSelected = value;
   }
 
   submitForm(form: NgForm) : void {
     if(form.valid) {
-      const finalValue = this.cast(this.addValue, this.itemSelected);
-
+      const finalValue = this.convertValue(this.propertyValue, this.itemSelected);
       this.typeIsValid = this.testDataType(finalValue, this.itemSelected);
 
-      let testObject: boolean = true;
-
-      if(this.itemSelected == 6) {
-        testObject = this.canParseObject();
-      }
-
-      if(this.typeIsValid && testObject) { 
-        this.propertyAlreadyExists = this.dataRepositoryService.hasProperty(this.addPropertyName);
+      if(this.typeIsValid) { 
+        this.propertyAlreadyExists = this.dataRepositoryService.hasProperty(this.propertyName);
         
+        this.hasError = false;
+
         if(!this.propertyAlreadyExists) {
           this.addProperty();
         }
       } else {
-        if(!this.typeIsValid) {
-          this.error = "Value Type invalid.";
-        } else {
-          this.error = "Can't parse object.";
-        }
+        this.hasError = true;
+        this.error = "Value of type invalid.";
       }     
     } else {
+      this.hasError = true;
       this.error = "Form invalid.";
     }
   }
@@ -78,15 +71,19 @@ export class AddDataComponent {
   }
 
   private testDataType(value: any, type: number) : boolean {
-    console.log(Object.prototype.toString.call(value).toLowerCase());
+    if(value === undefined || value === null) {
+      return false;
+    }
+
+    const objectName: string = Object.prototype.toString.call(value).toLowerCase();
 
     switch(type) {
       case 0:
-        return (Object.prototype.toString.call(value).toLowerCase() === '[object string]') ? true : false;
+        return (objectName === '[object string]') ? true : false;
       case 1:
-        return (Object.prototype.toString.call(value).toLowerCase() === '[object number]') ? true : false;
+        return (objectName === '[object number]') ? true : false;
       case 2:
-        return (Object.prototype.toString.call(value).toLowerCase() === '[object boolean]') ? true : false;
+        return (objectName === '[object boolean]') ? true : false;
       case 3: 
         return (value.length == 0) ? false : (Object.prototype.toString.call(value[0]).toLowerCase() === '[object string]') ? true : false;
       case 4:
@@ -94,21 +91,25 @@ export class AddDataComponent {
       case 5:
         return (value.length == 0) ? false : (Object.prototype.toString.call(value[0]).toLowerCase() === '[object boolean]') ? true : false;
       case 6:
-        return (Object.prototype.toString.call(value).toLowerCase() === '[object object]') ? true : false;
+        return (objectName === '[object object]') ? true : false;
     }
 
     return false;
   }
 
-  private cast(value: any, type: number) : any | undefined {
+  private convertValue(value: any, type: number) : any | undefined {
+    if(value === undefined || value === null || value === '') {
+      return undefined;
+    }
+
     switch(type) {
       case 0:
-        return value;
+        return  value;
       case 1:
-        return parseInt(value);
+        const regEx: RegExp = /^[\d]+$/g;
+        return (value.match(regEx)) ? parseInt(value) : undefined;
       case 2:
-        let b: boolean | undefined = (value.trim() === 'true') ? true : (value.trim() === 'false') ? false : undefined;
-        return b;
+        return (value === true || value === false) ? value : (value.trim() === 'true') ? true : (value.trim() === 'false') ? false : undefined;
       case 3:
         let splittedStrings: string[] = value.split(',')
         return splittedStrings.map(item => {
@@ -122,31 +123,22 @@ export class AddDataComponent {
       case 5:
         let splittedBooleans: string[] = value.split(',');
         return splittedBooleans.map(item => {
-          return (item.trim() === 'true') ? true : (item.trim() === 'false') ? false : undefined;
+          return (item.trim() === 'true') ? true : (item.trim() === 'false') ? false : undefined;  
         });
-      case 6:
-        try {
-          return JSON.parse(value); 
+      case 6:        
+        try {          
+          return JSON.parse(value);
         } catch { 
-          return "Unable to parse object.";
+          return undefined;
         };
     }
 
     return undefined;
   }
 
-  private canParseObject() : boolean {
-    try {
-      let obj: object = this.cast(this.addValue, this.itemSelected);
-      return this.testDataType(obj, 6);
-    } catch {
-      return false;
-    }
-  }
-
   private addProperty() : void {
-    const finalValue = this.cast(this.addValue, this.itemSelected);
-    this.dataRepositoryService.addProperty(this.addPropertyName, finalValue, this.itemSelected);
+    const finalValue = this.convertValue(this.propertyValue, this.itemSelected);
+    this.dataRepositoryService.addProperty(this.propertyName, finalValue, this.itemSelected);
   }
 
 }

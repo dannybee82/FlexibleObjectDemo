@@ -1,15 +1,15 @@
 <div class="container-fluid mt-2">
-    <ng-container *ngIf="this.keys?.length ?? 0 > 0">
-        <div class="row mt-1" *ngFor="let key of this.keys; let index = index">
+    <ng-container *ngIf="this.propertyNames?.length ?? 0 > 0">
+        <div class="row mt-1" *ngFor="let key of this.propertyNames; let index = index">
             <div class="col-1">
                 <button class="btn bg-danger text-light" title="Remove Property" (click)="this.remove(index)">
                     <i class="bi bi-x"></i>
                 </button>
             </div>
-            <div class="col-2 mt-1">
+            <div id="propertyName" class="col-2 mt-1">
                 <span class="fw-bold me-2">Propertyname:</span>{{ key }}
             </div>
-            <div class="col-2 mt-1">
+            <div id="typeName" class="col-2 mt-1">
                 <span class="fw-bold me-2">Type:</span>{{ (this.types != undefined && index < this.types.length) ? this.types[index] : "Unknown" }}
             </div>
         </div>
