@@ -48,7 +48,7 @@ export class RemoveDataComponent {
     this.propertyNames, this.types = [];
 
     let flexibleObject: FlexibleObject = this.dataRepositoryService.getFlexibleObject();
-    this.propertyNames = flexibleObject.getObjectKeys();
+    this.propertyNames = flexibleObject.getPropertyNames();
     this.getTypes();
     this.isVisible = (this.propertyNames?.length ?? 0 > 0) ? true : false;
   }

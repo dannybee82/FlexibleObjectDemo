@@ -35,7 +35,7 @@ describe('DataRepositoryService', () => {
       service.addProperty(propertyName + "_" + i, tryToAdd[i], typeValues[i]);    
     }
 
-    expect(service.getFlexibleObject().getObjectKeys()?.length ?? 0).toEqual(typeValues.length);
+    expect(service.getFlexibleObject().getPropertyAmount()).toEqual(typeValues.length);
   });
 
   it('Test methods: setUpdateView() getUpdateView() -> BehaviorSubject', fakeAsync(async() => {

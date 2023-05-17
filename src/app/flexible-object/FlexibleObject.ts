@@ -157,39 +157,32 @@ export class FlexibleObject {
     /**
      * getType() - Method to get the property type (derived from it's value).
      * 
-     * @param isVerbose = optional parameter. Can return: String, Number, Boolean, Object, Array String, Array Number, Array Boolean, Array Empty.
+     * @param isVerbose = optional parameter. Can return: String, Number, Boolean, Object, Array String, Array Number, Array Boolean, Array Empt or Array Mixed.
      * 
      */
 
     getType(propertyName: string, isVerbose?: boolean) : string | undefined {
-        if(this.hasProperty(propertyName)) {
-            let value: any = this._flexibleObject[propertyName]; 
-
-            if(!isVerbose) {                 
-                return Object.prototype.toString.call(value);
-            } else {
-                const regEx: RegExp = /^.*\s|\]{1}$/g;
-                let type: string = Object.prototype.toString.call(value).replace(regEx, "");
-
-                if(type === 'Array') {
-                    if(value.length == 0) {
-                        type += " Empty";
-                    } else {
-                        type += " " + Object.prototype.toString.call(value[0]).replace(regEx, "");
-                    }
-                }
-
-                return type;
-            }            
+        if(!this.hasProperty(propertyName)) {
+            return undefined;
         }
 
-        return undefined;
+        let value: any = this._flexibleObject[propertyName]; 
+
+        if(!isVerbose) {
+            return Object.prototype.toString.call(value);
+        }
+
+        //Get verbose type-data.
+        const regEx: RegExp = /^.*\s|\]{1}$/g;
+        let type: string = Object.prototype.toString.call(value).replace(regEx, "");
+
+        return (type === 'Array') ? type += this.getAdditionalData(value, regEx) : type;        
     }
 
     /**
      * isExpectedType() : Tests if the property is of the expected types.
     * 
-    * @param types = Use: String, Number, Boolean, Object, Array String, Array Number, Array Boolean, Array Unknown, or Null
+    * @param types = Use: String, Number, Boolean, Object, Array String, Array Number, Array Boolean, Array Empty, Array Mixed, or Null
      * 
      */
 
@@ -224,18 +217,23 @@ export class FlexibleObject {
     }
 
     /**
-     * getObjectKeys() - Methot to get all the keys in this Flexible-object.
+     * getPropertyNames() - Method to get all the keys/property-names in this Flexible-object.
      * 
      */
 
-    getObjectKeys() : string[] | undefined {
+    getPropertyNames() : string[] | undefined {
         let keys: string[] = Object.keys(this._flexibleObject) ?? [];
+        return (keys.length > 0) ? keys : undefined;
+    }
 
-        if(keys.length > 0) {
-            return keys;
-        }
+    /**
+     * getPropertyAmount() = Method to get the amount of properties in this Flexible Object.
+     * 
+     */
 
-        return undefined;
+    getPropertyAmount() : number {
+        let propertyNames: string[] | undefined = this.getPropertyNames();
+        return (propertyNames === undefined) ? 0 : propertyNames.length; 
     }
 
     /**
@@ -244,7 +242,7 @@ export class FlexibleObject {
      */
 
     hasContents() : boolean {
-        return (this.getObjectKeys() != undefined) ? true : false; 
+        return (this.getPropertyNames() != undefined) ? true : false; 
     }
 
     /**
@@ -253,11 +251,7 @@ export class FlexibleObject {
      */
 
     getStringValue(propertyName: string) : string | null {
-        if(this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["string", "null"], true)) {
-            return this._flexibleObject[propertyName];
-        }
-
-        return "";
+        return (this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["string", "null"], true)) ? this._flexibleObject[propertyName] : "";
     }
 
     /**
@@ -266,11 +260,7 @@ export class FlexibleObject {
      */
 
     getStringArray(propertyName: string) : string[] | undefined | null {
-        if(this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["array string", "array empty", "null"], true)) {
-            return this._flexibleObject[propertyName];
-        }
-
-        return undefined;
+        return (this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["array string", "array empty", "null"], true)) ? this._flexibleObject[propertyName] : undefined;
     }
 
     /**
@@ -279,11 +269,7 @@ export class FlexibleObject {
      */
 
     getNumberValue(propertyName: string, defaultValue?: number) : number | null {
-        if(this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["number", "null"], true)) {
-            return this._flexibleObject[propertyName];
-        }
-
-        return defaultValue ?? 0;
+        return (this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["number", "null"], true)) ? this._flexibleObject[propertyName] : defaultValue ?? 0;
     }
 
     /**
@@ -292,11 +278,7 @@ export class FlexibleObject {
      */
 
     getNumberArray(propertyName: string) : number[] | undefined | null {
-        if(this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["array number", "array empty", "null"], true)) {
-            return this._flexibleObject[propertyName];
-        }
-
-        return undefined;
+        return (this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["array number", "array empty", "null"], true)) ? this._flexibleObject[propertyName] : undefined;
     }
 
     /**
@@ -305,11 +287,7 @@ export class FlexibleObject {
      */
 
     getBooleanValue(propertyName: string, defaultValue?: boolean) : boolean | null {
-        if(this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["boolean", "null"], true)) {
-            return this._flexibleObject[propertyName];
-        }
-
-        return defaultValue ?? false;
+        return (this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["boolean", "null"], true)) ? this._flexibleObject[propertyName] : defaultValue ?? false;
     }
 
     /**
@@ -318,11 +296,7 @@ export class FlexibleObject {
      */
 
     getBooleanArray(propertyName: string) : boolean[] | undefined | null {
-        if(this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["array boolean", "array empty", "null"], true)) {
-            return this._flexibleObject[propertyName];
-        }
-
-        return undefined;
+        return (this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["array boolean", "array empty", "null"], true)) ?  this._flexibleObject[propertyName] : undefined;
     }
 
     /**
@@ -331,11 +305,7 @@ export class FlexibleObject {
      */
 
     getAnyValue(propertyName: string, defaultValue?: any) : any | null {
-        if(this.hasProperty(propertyName)) {
-            return this._flexibleObject[propertyName];
-        }
-
-        return defaultValue ?? "";
+        return (this.hasProperty(propertyName)) ? this._flexibleObject[propertyName] : defaultValue ?? "";
     }
 
     /**
@@ -344,11 +314,7 @@ export class FlexibleObject {
      */
 
     getAnyArray(propertyName: string) : any[] | undefined | null {
-        if(this.hasProperty(propertyName)) {
-            return this._flexibleObject[propertyName];
-        }
-
-        return undefined;
+        return (this.hasProperty(propertyName)) ? this._flexibleObject[propertyName] : undefined;
     }
 
     /**
@@ -357,11 +323,7 @@ export class FlexibleObject {
      */
 
     getObject(propertyName: string) : object | undefined | null {
-        if(this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["object", "null"], true)) {
-            return this._flexibleObject[propertyName];
-        }
-
-        return undefined;
+        return (this.hasProperty(propertyName) && this.isExpectedType(propertyName, ["object", "null"], true)) ? this._flexibleObject[propertyName] : undefined;
     }
 
     /**
@@ -405,26 +367,80 @@ export class FlexibleObject {
         let arr: string[] = [];
 
         for(let i = 0; i < properties.length; i++) {
-            if(this.hasProperty(properties[i])) {
-                if(ignoreProperties != undefined) {
-                    let index: number = ignoreProperties.indexOf(properties[i]);
-
-                    if(index == -1) {
-                        if(this.getAnyValue(properties[i]) === '') {
-                            arr.push( "Property: " + properties[i] + " is empty.");
-                        }
-                    }
-                } else {
-                    if(this.getAnyValue(properties[i]) === '') {
-                        arr.push( "Property: " + properties[i] + " is empty.");
-                    }
-                }
-            } else {
-                arr.push( "Property: " + properties[i] + " doesn't exist.");
-            }
+            arr = this.mergeStringArrays(arr, this.checkExistence(properties[i]));
+            arr = (ignoreProperties != undefined) ? this.mergeStringArrays(arr, this.checkEmptyWithIgnore(properties[i], ignoreProperties)) : this.mergeStringArrays(arr, this.checkEmpty(properties[i]));
         }        
 
         return arr;
+    }
+
+    /**
+     * checkExistence() - Checks if property exists.
+     * 
+     */
+
+    private checkExistence(propertyName: string) : string[] {
+        return this.hasProperty(propertyName) ? [] : ["Property: " + propertyName + " doesn't exist."];
+    }
+
+    /**
+     * checkEmpty() - Check for empty data.
+     * 
+     */
+
+    private checkEmpty(propertyName: string) : string[] {
+        return (!this.hasProperty(propertyName)) ? [] : (this.getAnyValue(propertyName) !== '') ? [] : ["Property: " + propertyName + " is empty."];
+    }
+
+    /**
+     * checkEmptyWithIgnore() - Check for empty data, igore values in ignoreProperties: string[].
+     * 
+     */
+
+    private checkEmptyWithIgnore(propertyName: string, ignoreProperties: string[]) : string[] {
+        let index: number = ignoreProperties.indexOf(propertyName);
+        return (index == -1) ? [] : (!this.hasProperty(propertyName)) ? [] : (this.getAnyValue(propertyName) !== '') ? [] : ["Property: " + propertyName + " is empty."];
+    }
+
+    /**
+     * mergeStringArrays() - Private method to merge 2 string[] arrays.
+     * 
+     */
+
+    private mergeStringArrays(arr1: string[], arr2: string[]) : string[] {
+        arr2.forEach(item => {
+            arr1.push(item);
+        });
+
+        return arr1;
+    }
+
+    /**
+     * getAdditionalData() - Method to get additional type-data from an array.
+     * 
+     */
+
+    private getAdditionalData(value: any, regEx: RegExp) : string {
+        return (value.length == 0) ? " Empty" : this.getArrayType(value, regEx);
+    }
+
+    /**
+     * getArrayType() - Method inspects an array and derives its type.
+     * 
+     */
+
+    private getArrayType(value: any, regEx: RegExp) : string {
+        let allTypes: string[] = [];
+
+        for(let i = 0; i < value.length; i++) {
+            allTypes.push(Object.prototype.toString.call(value[i]).replace(regEx, ""));
+        }
+
+        let uniqueTypes: string[] = allTypes.filter((element, index) => {
+            return allTypes.indexOf(element) === index;
+        });
+
+        return (uniqueTypes.length == 1) ? " " + uniqueTypes[0] : " Mixed";
     }
 
 }
