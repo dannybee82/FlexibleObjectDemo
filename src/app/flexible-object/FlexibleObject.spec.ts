@@ -275,7 +275,10 @@ describe('DataRepositoryService', () => {
         let expectationDoensntExist: string[] = ["Property: property_doesnt_exist_1 doesn't exist.","Property: property_doesnt_exist_2 doesn't exist.","Property: property_doesnt_exist_3 doesn't exist."];
 
         //Test for doesn't exist & ignore previous properties.
-        expect(flexibleObject.checkEmptyValues(testDoesntExist, propertyNames)).toEqual(expectationDoensntExist);
+        expect(flexibleObject.checkEmptyValues(testDoesntExist)).toEqual(expectationDoensntExist);
+
+        //Final test with ignore all properties.
+        expect(flexibleObject.checkEmptyValues(propertyNames,propertyNames)).toEqual([]);
     });
 
 });

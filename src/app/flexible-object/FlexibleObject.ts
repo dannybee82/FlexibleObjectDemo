@@ -36,7 +36,7 @@ export class FlexibleObject {
     }
 
     /**
-     * setStringArray() - Adds a new property with a string array.
+     * setStringArray() - Adds a new property with a string[] array.
      * 
      */
 
@@ -54,7 +54,7 @@ export class FlexibleObject {
     }
 
     /**
-     * setNumberArray() - Adds a new property with a number array.
+     * setNumberArray() - Adds a new property with a number[] array.
      * 
      */
 
@@ -72,7 +72,7 @@ export class FlexibleObject {
     }
 
     /**
-     * setBooleanArray() - Adds a new property with a boolean array.
+     * setBooleanArray() - Adds a new property with a boolean[] array.
      * 
      */
 
@@ -108,7 +108,7 @@ export class FlexibleObject {
     }
 
     /**
-     * setValue() - Adds a new property with a specific value at specified index.
+     * setValue() - Adds a new property with a specific value.
      * 
      */
 
@@ -157,7 +157,7 @@ export class FlexibleObject {
     /**
      * getType() - Method to get the property type (derived from it's value).
      * 
-     * @param isVerbose = optional parameter. Can return: String, Number, Boolean, Object, Array String, Array Number, Array Boolean, Array Empt or Array Mixed.
+     * @param isVerbose = optional parameter. Can return: String, Number, Boolean, Object, Array String, Array Number, Array Boolean, Array Empty or Array Mixed.
      * 
      */
 
@@ -181,8 +181,8 @@ export class FlexibleObject {
 
     /**
      * isExpectedType() : Tests if the property is of the expected types.
-    * 
-    * @param types = Use: String, Number, Boolean, Object, Array String, Array Number, Array Boolean, Array Empty, Array Mixed, or Null
+     * 
+     * @param types = Use: String, Number, Boolean, Object, Array String, Array Number, Array Boolean, Array Empty, Array Mixed, or Null
      * 
      */
 
@@ -300,7 +300,7 @@ export class FlexibleObject {
     }
 
     /**
-     * getAnyValue() - Gets the any value of a property from specified index.
+     * getAnyValue() - Gets the any value of a property.
      * 
      */
 
@@ -309,7 +309,7 @@ export class FlexibleObject {
     }
 
     /**
-     * getAnyArray() - Gets the any[] array of a property from specified index.
+     * getAnyArray() - Gets the any[] array of a property.
      * 
      */
 
@@ -327,7 +327,7 @@ export class FlexibleObject {
     }
 
     /**
-     * getValue() - Gets the value of a specified property with type.
+     * getValue() - Gets the value of a specified property of type.
      * 
      */
 
@@ -367,8 +367,8 @@ export class FlexibleObject {
         let arr: string[] = [];
 
         for(let i = 0; i < properties.length; i++) {
-            arr = this.mergeStringArrays(arr, this.checkExistence(properties[i]));
-            arr = (ignoreProperties != undefined) ? this.mergeStringArrays(arr, this.checkEmptyWithIgnore(properties[i], ignoreProperties)) : this.mergeStringArrays(arr, this.checkEmpty(properties[i]));
+            arr = (ignoreProperties !== undefined) ? this.mergeStringArrays(arr, this.checkExistenceWithIgnore(properties[i], ignoreProperties))  : this.mergeStringArrays(arr, this.checkExistence(properties[i]));
+            arr = (ignoreProperties !== undefined) ? this.mergeStringArrays(arr, this.checkEmptyWithIgnore(properties[i], ignoreProperties)) : this.mergeStringArrays(arr, this.checkEmpty(properties[i]));
         }        
 
         return arr;
@@ -384,6 +384,16 @@ export class FlexibleObject {
     }
 
     /**
+     * checkExistence() - Checks if property exists. Ignores propertyNames in ignoreProperties: string[].
+     * 
+     */
+
+    private checkExistenceWithIgnore(propertyName: string, ignoreProperties: string[]) : string[] {
+        let index: number = ignoreProperties.indexOf(propertyName);
+        return (index > -1) ? [] : this.hasProperty(propertyName) ? [] : ["Property: " + propertyName + " doesn't exist."];
+    }
+
+    /**
      * checkEmpty() - Check for empty data.
      * 
      */
@@ -393,13 +403,13 @@ export class FlexibleObject {
     }
 
     /**
-     * checkEmptyWithIgnore() - Check for empty data, igore values in ignoreProperties: string[].
+     * checkEmptyWithIgnore() - Check for empty data, ignore values in ignoreProperties: string[].
      * 
      */
 
     private checkEmptyWithIgnore(propertyName: string, ignoreProperties: string[]) : string[] {
         let index: number = ignoreProperties.indexOf(propertyName);
-        return (index == -1) ? [] : (!this.hasProperty(propertyName)) ? [] : (this.getAnyValue(propertyName) !== '') ? [] : ["Property: " + propertyName + " is empty."];
+        return (index > -1) ? [] : (this.getAnyValue(propertyName) === '') ? ["Property: " + propertyName + " is empty."] : [];
     }
 
     /**
