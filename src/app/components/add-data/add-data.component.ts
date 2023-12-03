@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, WritableSignal, signal } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 //Services.
@@ -24,16 +24,17 @@ export class AddDataComponent {
     "String Array - separate values by commas e.g.: ananas, lemon, peach",
     "Number Array - separate values by commas e.g.: 1, 2, 3",
     "Boolean Array - separate values by commas e.g.: true, false, true",
-    "Object - place properties in JSON between braces e.g.: {\"fruit\": \"apple\"}"
+    "Object - place properties in JSON-format between braces e.g.: {\"fruit\": \"apple\"}"
   ];
 
   public typeIsValid: boolean = false;
-  public propertyAlreadyExists: boolean = false;
-
-  public hasError: boolean = false;
+  public propertyAlreadyExists: WritableSignal<boolean> = signal(false);
+  public hasError: WritableSignal<boolean> = signal(false);
   public error: string = "";
 
-  constructor(private dataRepositoryService: DataRepositoryService) {}
+  constructor(
+    private dataRepositoryService: DataRepositoryService
+  ) {}
 
   changeOption(value: number) : void {
     this.itemSelected = value;
@@ -45,19 +46,18 @@ export class AddDataComponent {
       this.typeIsValid = this.testDataType(finalValue, this.itemSelected);
 
       if(this.typeIsValid) { 
-        this.propertyAlreadyExists = this.dataRepositoryService.hasProperty(this.propertyName);
-        
-        this.hasError = false;
+        this.propertyAlreadyExists.set( this.dataRepositoryService.hasProperty(this.propertyName) );        
+        this.hasError.set(false);
 
-        if(!this.propertyAlreadyExists) {
+        if(!this.propertyAlreadyExists()) {
           this.addProperty();
         }
       } else {
-        this.hasError = true;
+        this.hasError.set(true);
         this.error = "Value of type invalid.";
       }     
     } else {
-      this.hasError = true;
+      this.hasError.set(true);
       this.error = "Form invalid.";
     }
   }
@@ -67,7 +67,7 @@ export class AddDataComponent {
       this.addProperty();
     }
 
-    this.propertyAlreadyExists = false;
+    this.propertyAlreadyExists.set(false);
   }
 
   private testDataType(value: any, type: number) : boolean {

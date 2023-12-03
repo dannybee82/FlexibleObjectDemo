@@ -1,58 +1,62 @@
 <div class="container-fluid">
-    <div class="row">
-        <h3>Add custom properties to Flexible Object</h3>
+  <div class="row">
+    <h3>Add custom properties to Flexible Object</h3>
+  </div>
+  <form #form="ngForm" (ngSubmit)="this.submitForm(form)">
+    <div class="row mt-2">
+      <div class="col-1">
+        <label class="form-label fw-bold mt-1">Propertyname:</label>
+      </div>
+      <div class="col-3">
+        <input type="text" class="form-control" id="addPropertyName" name="addPropertyName" [(ngModel)]="this.propertyName" required autocomplete="off" [disabled]="this.propertyAlreadyExists()">
+      </div>
     </div>
-    <form #form="ngForm" (ngSubmit)="this.submitForm(form)">
-        <div class="row mt-2">
-            <div class="col-1">
-                <label class="form-label fw-bold mt-1">Propertyname:</label>                
-            </div>
-            <div class="col-3">
-                <input type="text" class="form-control" id="addPropertyName" name="addPropertyName" [(ngModel)]="this.propertyName" required autocomplete="off" [disabled]="this.propertyAlreadyExists">
-            </div>            
+    <div class="row mt-2">
+      <div class="col-1">
+        <label class="form-label fw-bold mt-1">Value(s):</label>
+      </div>
+      <div class="col-3">
+        <input type="text" class="form-control" id="addValue" name="addValue" [(ngModel)]="this.propertyValue" required autocomplete="off" [disabled]="this.propertyAlreadyExists()">
+      </div>
+      <div class="col-1">
+        <label class="form-label fw-bold mt-1">Type:</label>
+      </div>
+      <div class="col-auto">
+        <select class="form-select" (change)="this.changeOption($any($event).target.selectedIndex)" [disabled]="this.propertyAlreadyExists()">
+          @for (option of this.selectOptions; track option; let index = $index) {
+            <option [value]="index">{{ option }}</option>
+          }
+        </select>
+      </div>
+      <div class="col-4 pt-1">
+        <span>{{ this.selectOptionsToolTips[this.itemSelected] }}</span>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-auto">
+        <button type="submit" class="btn bg-success text-light" [disabled]="this.propertyAlreadyExists()" title="Add Data">
+          <i class="bi bi-plus"></i>
+          <span class="ms-2">Add Data</span>
+        </button>
+      </div>
+      @if (this.hasError()) {
+        <div class="col-auto p-2 bg-danger text-light rounded">
+          {{ this.error }}
         </div>
-        <div class="row mt-2">
-            <div class="col-1">
-                <label class="form-label fw-bold mt-1">Value(s):</label>                
-            </div>
-            <div class="col-3">
-                <input type="text" class="form-control" id="addValue" name="addValue" [(ngModel)]="this.propertyValue" required autocomplete="off" [disabled]="this.propertyAlreadyExists">
-            </div>
-            <div class="col-1">
-                <label class="form-label fw-bold mt-1">Type:</label>                
-            </div>
-            <div class="col-auto">
-                <select class="form-select" (change)="this.changeOption($any($event).target.selectedIndex)" [disabled]="this.propertyAlreadyExists">
-                    <ng-container *ngFor="let option of this.selectOptions; let index = index">
-                        <option [value]="index">{{ option }}</option>
-                    </ng-container>
-                </select>
-            </div>
-            <div class="col-4 pt-1">
-                <span>{{ this.selectOptionsToolTips[this.itemSelected] }}</span>
-            </div>
+      }
+      @if (this.propertyAlreadyExists()) {
+        <div class="col-auto">
+          <span class="mt-1 ms-2">Property already exists. Do you want to overwrite this property?</span>
+          <button class="btn btn-danger text-light ms-1 me-1" title="Overwrite" (click)="this.overwrite(true)">
+            <i class="bi bi-pencil-fill"></i>
+            <span class="ms-2">Overwrite</span>
+          </button>
+          <button class="btn btn-secondary text-light ms-1" title="Cancel" (click)="this.overwrite(false)">
+            <i class="bi bi-x"></i>
+            <span class="ms-2">Cancel</span>
+          </button>
         </div>
-        <div class="row mt-2">
-            <div class="col-auto">
-                <button type="submit" class="btn bg-success text-light" [disabled]="this.propertyAlreadyExists" title="Add Data">
-                    <i class="bi bi-plus"></i>
-                    <span class="ms-2">Add Data</span>
-                </button>
-            </div>
-            <div class="col-auto p-2 bg-danger text-light rounded" *ngIf="this.hasError">
-                {{ this.error }}
-            </div>
-            <div class="col-auto" *ngIf="this.propertyAlreadyExists">
-                <span class="mt-1 ms-2">Property already exists. Do you want to overwrite this property?</span>
-                <button class="btn btn-danger text-light ms-1 me-1" title="Overwrite" (click)="this.overwrite(true)">
-                    <i class="bi bi-pencil-fill"></i>
-                    <span class="ms-2">Overwrite</span>
-                </button>
-                <button class="btn btn-secondary text-light ms-1" title="Cancel" (click)="this.overwrite(false)">
-                    <i class="bi bi-x"></i>
-                    <span class="ms-2">Cancel</span>
-                </button>
-            </div>
-        </div>
-    </form>
+      }
+    </div>
+  </form>
 </div>

@@ -62,10 +62,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "FlexibleObjectDemo:build:production"
+              "buildTarget": "FlexibleObjectDemo:build:production"
             },
             "development": {
-              "browserTarget": "FlexibleObjectDemo:build:development"
+              "buildTarget": "FlexibleObjectDemo:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -73,7 +73,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "FlexibleObjectDemo:build"
+            "buildTarget": "FlexibleObjectDemo:build"
           }
         },
         "test": {

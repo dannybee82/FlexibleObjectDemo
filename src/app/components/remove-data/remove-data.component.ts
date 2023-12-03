@@ -17,10 +17,7 @@ export class RemoveDataComponent {
   public propertyNames: string[] | undefined = [];
   public types: string[] | undefined = [];
 
-  public isVisible: boolean = false;
-
   constructor(private dataRepositoryService: DataRepositoryService) {
-    //Listen for changes.
     this.dataRepositoryService.getUpdateView().subscribe({
       next: (result) => {
         if(result) {
@@ -50,7 +47,6 @@ export class RemoveDataComponent {
     let flexibleObject: FlexibleObject = this.dataRepositoryService.getFlexibleObject();
     this.propertyNames = flexibleObject.getPropertyNames();
     this.getTypes();
-    this.isVisible = (this.propertyNames?.length ?? 0 > 0) ? true : false;
   }
 
 }
