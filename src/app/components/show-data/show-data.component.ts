@@ -5,8 +5,13 @@ import { DataRepositoryService } from 'src/app/services/data-repository.service'
 
 //Flexible Object.
 import { FlexibleObject } from 'src/app/flexible-object/FlexibleObject';
+import { CommonModule } from '@angular/common';
 
 @Component({
+	standalone: true,
+	imports: [
+		CommonModule,
+	],
   selector: 'app-show-data',
   templateUrl: './show-data.component.html',
   styleUrls: ['./show-data.component.css']

@@ -7,6 +7,7 @@ import { DataRepositoryService } from 'src/app/services/data-repository.service'
 import { FlexibleObject } from 'src/app/flexible-object/FlexibleObject';
 
 @Component({
+	standalone: true,
   selector: 'app-remove-data',
   templateUrl: './remove-data.component.html',
   styleUrls: ['./remove-data.component.css']

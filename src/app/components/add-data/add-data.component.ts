@@ -3,8 +3,15 @@ import { NgForm } from '@angular/forms';
 
 //Services.
 import { DataRepositoryService } from 'src/app/services/data-repository.service';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
+	standalone: true,
+	imports: [
+		FormsModule,
+		ReactiveFormsModule,
+	],
   selector: 'app-add-data',
   templateUrl: './add-data.component.html',
   styleUrls: ['./add-data.component.css']
