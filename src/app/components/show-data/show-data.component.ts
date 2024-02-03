@@ -1,4 +1,4 @@
-import { Component, WritableSignal, signal } from '@angular/core';
+import { Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
 
 //Services.
 import { DataRepositoryService } from 'src/app/services/data-repository.service';
@@ -16,13 +16,15 @@ import { CommonModule } from '@angular/common';
   templateUrl: './show-data.component.html',
   styleUrls: ['./show-data.component.css']
 })
-export class ShowDataComponent {
+export class ShowDataComponent implements OnInit {
 
   public isvisible: WritableSignal<boolean> = signal(false);
 
   public flexibleObject?: FlexibleObject;
   
-  constructor(private dataRepositoryService: DataRepositoryService) {
+  private dataRepositoryService = inject(DataRepositoryService);
+
+  ngOnInit() : void {
     this.dataRepositoryService.getUpdateView().subscribe({
       next: (result) => {
         if(result) {

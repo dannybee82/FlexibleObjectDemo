@@ -8,7 +8,6 @@ import { ALLOWED_DATA_TYPES } from '../flexible-object/FlexibleObjectData';
 @Injectable({
   providedIn: 'root'
 })
-
 export class DataRepositoryService {
 
   private _flexibleObject: FlexibleObject;

@@ -1,4 +1,4 @@
-import { Component, WritableSignal, signal } from '@angular/core';
+import { Component, WritableSignal, signal, inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 //Services.
@@ -39,9 +39,7 @@ export class AddDataComponent {
   public hasError: WritableSignal<boolean> = signal(false);
   public error: string = "";
 
-  constructor(
-    private dataRepositoryService: DataRepositoryService
-  ) {}
+	private dataRepositoryService = inject(DataRepositoryService);
 
   changeOption(value: number) : void {
     this.itemSelected = value;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 //Services.
 import { DataRepositoryService } from 'src/app/services/data-repository.service';
@@ -13,12 +13,14 @@ import { FlexibleObject } from 'src/app/flexible-object/FlexibleObject';
   styleUrls: ['./remove-data.component.css']
 })
 
-export class RemoveDataComponent {
+export class RemoveDataComponent implements OnInit {
 
   public propertyNames: string[] | undefined = [];
   public types: string[] | undefined = [];
 
-  constructor(private dataRepositoryService: DataRepositoryService) {
+  private dataRepositoryService = inject(DataRepositoryService);
+
+  ngOnInit() : void {
     this.dataRepositoryService.getUpdateView().subscribe({
       next: (result) => {
         if(result) {
