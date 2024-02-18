@@ -20,8 +20,8 @@ describe('AddDataComponent', () => {
 
   beforeEach(async() => {
     TestBed.configureTestingModule({
-      declarations: [AddDataComponent],
-      imports: [FormsModule],
+      declarations: [],
+      imports: [FormsModule, AddDataComponent],
       providers:[ { provide: DataRepositoryService, useValue: mockDataRepository } ]
     }).compileComponents();
 

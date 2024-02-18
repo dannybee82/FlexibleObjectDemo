@@ -50,8 +50,9 @@ describe('RemoveDataComponent', () => {
 
   beforeEach(async() => {
     TestBed.configureTestingModule({
-      declarations: [RemoveDataComponent],
-      providers: [{provide: DataRepositoryService, useValue: mockDataRepository}]
+      declarations: [],
+      providers: [{provide: DataRepositoryService, useValue: mockDataRepository}],
+      imports: [RemoveDataComponent]
     }).compileComponents();
     fixture = TestBed.createComponent(RemoveDataComponent);
     component = fixture.componentInstance;

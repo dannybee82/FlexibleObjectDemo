@@ -34,8 +34,9 @@ describe('ShowDataComponent', () => {
 
   beforeEach(async() => {
     TestBed.configureTestingModule({
-      declarations: [ShowDataComponent],
-      providers: [ {provide: DataRepositoryService, useValue: mockDataRepository} ]
+      declarations: [],
+      providers: [ {provide: DataRepositoryService, useValue: mockDataRepository} ],
+      imports: [ShowDataComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ShowDataComponent);

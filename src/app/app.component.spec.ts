@@ -1,11 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { FlexibleObjectDemoModule } from './components/flexible-object-demo.module';
 
 describe('AppComponent', () => {
   beforeEach(() => TestBed.configureTestingModule({
-    declarations: [AppComponent],
-    imports: [FlexibleObjectDemoModule]
+    declarations: [],
+    imports: [AppComponent]
   }));
 
   it('should create the app', () => {
