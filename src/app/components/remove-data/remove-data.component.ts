@@ -10,7 +10,7 @@ import { FlexibleObject } from 'src/app/flexible-object/FlexibleObject';
 	standalone: true,
   selector: 'app-remove-data',
   templateUrl: './remove-data.component.html',
-  styleUrls: ['./remove-data.component.css']
+  styleUrls: ['./remove-data.component.scss']
 })
 
 export class RemoveDataComponent implements OnInit {

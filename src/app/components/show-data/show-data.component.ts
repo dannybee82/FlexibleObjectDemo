@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
 	],
   selector: 'app-show-data',
   templateUrl: './show-data.component.html',
-  styleUrls: ['./show-data.component.css']
+  styleUrls: ['./show-data.component.scss']
 })
 export class ShowDataComponent implements OnInit {
 

@@ -14,7 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 	],
   selector: 'app-add-data',
   templateUrl: './add-data.component.html',
-  styleUrls: ['./add-data.component.css']
+  styleUrls: ['./add-data.component.scss']
 })
 export class AddDataComponent {
 
