@@ -12,7 +12,7 @@ import { RemoveDataComponent } from 'src/app/components/remove-data/remove-data.
 	],
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   title = 'FlexibleObjectDemo';

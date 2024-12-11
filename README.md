@@ -2,9 +2,9 @@
 
 Demo project. Add custom properties to flexible object.
 
- See images at the root-directory for examples.
+See images at the root-directory for examples.
 
-Angular 18 + Bootstrap 5.
+Angular 19 + Bootstrap 5.
 
 ## Installation + run app
 
