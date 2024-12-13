@@ -4,7 +4,6 @@ import { ShowDataComponent } from 'src/app/components/show-data/show-data.compon
 import { RemoveDataComponent } from 'src/app/components/remove-data/remove-data.component';
 
 @Component({
-	standalone: true,
 	imports: [
 		AddDataComponent,
 		ShowDataComponent,

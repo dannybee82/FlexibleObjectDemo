@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-	standalone: true,
 	imports: [
 		FormsModule,
 		ReactiveFormsModule,

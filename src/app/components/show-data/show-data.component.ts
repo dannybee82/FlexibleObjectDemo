@@ -8,7 +8,6 @@ import { FlexibleObject } from 'src/app/flexible-object/FlexibleObject';
 import { CommonModule } from '@angular/common';
 
 @Component({
-	standalone: true,
 	imports: [
 		CommonModule,
 	],
