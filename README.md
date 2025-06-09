@@ -4,7 +4,7 @@ Demo project. Add custom properties to flexible object.
 
 See images at the root-directory for examples.
 
-Angular 19 + Bootstrap 5.
+Angular 20 (with [Angular CLI](https://github.com/angular/angular-cli) version 20.0.1) + Bootstrap 5.
 
 ## Installation + run app
 
