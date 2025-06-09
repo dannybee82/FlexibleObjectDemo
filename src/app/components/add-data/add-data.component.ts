@@ -1,7 +1,5 @@
 import { Component, WritableSignal, signal, inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
-
-//Services.
 import { DataRepositoryService } from 'src/app/services/data-repository.service';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -17,13 +15,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 })
 export class AddDataComponent {
 
-  public propertyName: string = "";
-  public propertyValue: string = "";
+  protected propertyName: WritableSignal<string> = signal("");
+  protected propertyValue: WritableSignal<string> = signal("");
   
-  public itemSelected: number = 0;
+  protected itemSelected: WritableSignal<number> = signal(0);
 
-  public selectOptions: string[] = ["String", "Number", "Boolean", "String Array", "Number Array", "Boolean Array", "Object"];
-  public selectOptionsToolTips: string[] = [
+  protected selectOptions: WritableSignal<string[]> = signal(["String", "Number", "Boolean", "String Array", "Number Array", "Boolean Array", "Object"]);
+  protected selectOptionsToolTips: WritableSignal<string[]> = signal([
     "Enter a String value e.g.: pear",
     "Enter a Number value e.g.: 3",
     "Enter a Boolean value e.g: true or false",
@@ -31,26 +29,26 @@ export class AddDataComponent {
     "Number Array - separate values by commas e.g.: 1, 2, 3",
     "Boolean Array - separate values by commas e.g.: true, false, true",
     "Object - place properties in JSON-format between braces e.g.: {\"fruit\": \"apple\"}"
-  ];
+  ]);
 
-  public typeIsValid: boolean = false;
-  public propertyAlreadyExists: WritableSignal<boolean> = signal(false);
-  public hasError: WritableSignal<boolean> = signal(false);
-  public error: string = "";
+  protected typeIsValid: boolean = false;
+  protected propertyAlreadyExists: WritableSignal<boolean> = signal(false);
+  protected hasError: WritableSignal<boolean> = signal(false);
+  protected error: WritableSignal<string> = signal("");
 
 	private dataRepositoryService = inject(DataRepositoryService);
 
-  changeOption(value: number) : void {
-    this.itemSelected = value;
+  changeOption(value: number): void {
+    this.itemSelected.set(value);
   }
 
-  submitForm(form: NgForm) : void {
+  submitForm(form: NgForm): void {
     if(form.valid) {
-      const finalValue = this.convertValue(this.propertyValue, this.itemSelected);
-      this.typeIsValid = this.testDataType(finalValue, this.itemSelected);
+      const finalValue = this.convertValue(this.propertyValue(), this.itemSelected());
+      this.typeIsValid = this.testDataType(finalValue, this.itemSelected());
 
       if(this.typeIsValid) { 
-        this.propertyAlreadyExists.set( this.dataRepositoryService.hasProperty(this.propertyName) );        
+        this.propertyAlreadyExists.set( this.dataRepositoryService.hasProperty(this.propertyName()) );        
         this.hasError.set(false);
 
         if(!this.propertyAlreadyExists()) {
@@ -58,15 +56,15 @@ export class AddDataComponent {
         }
       } else {
         this.hasError.set(true);
-        this.error = "Value of type invalid.";
+        this.error.set("Value of type invalid.");
       }     
     } else {
       this.hasError.set(true);
-      this.error = "Form invalid.";
+      this.error.set("Form invalid.");
     }
   }
 
-  overwrite(isOverwrite: boolean) : void {
+  overwrite(isOverwrite: boolean): void {
     if(isOverwrite) {
       this.addProperty();
     }
@@ -74,7 +72,7 @@ export class AddDataComponent {
     this.propertyAlreadyExists.set(false);
   }
 
-  private testDataType(value: any, type: number) : boolean {
+  private testDataType(value: any, type: number): boolean {
     if(value === undefined || value === null) {
       return false;
     }
@@ -101,7 +99,7 @@ export class AddDataComponent {
     return false;
   }
 
-  private convertValue(value: any, type: number) : any | undefined {
+  private convertValue(value: any, type: number): any | undefined {
     if(value === undefined || value === null || value === '') {
       return undefined;
     }
@@ -140,9 +138,9 @@ export class AddDataComponent {
     return undefined;
   }
 
-  private addProperty() : void {
-    const finalValue = this.convertValue(this.propertyValue, this.itemSelected);
-    this.dataRepositoryService.addProperty(this.propertyName, finalValue, this.itemSelected);
+  private addProperty(): void {
+    const finalValue = this.convertValue(this.propertyValue(), this.itemSelected());
+    this.dataRepositoryService.addProperty(this.propertyName(), finalValue, this.itemSelected());
   }
 
 }

@@ -14,5 +14,4 @@ import { RemoveDataComponent } from 'src/app/components/remove-data/remove-data.
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'FlexibleObjectDemo';
 }

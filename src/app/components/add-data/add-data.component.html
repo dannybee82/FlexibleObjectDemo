@@ -23,13 +23,13 @@
       </div>
       <div class="col-auto">
         <select class="form-select" (change)="this.changeOption($any($event).target.selectedIndex)" [disabled]="this.propertyAlreadyExists()">
-          @for (option of this.selectOptions; track option; let index = $index) {
+          @for (option of this.selectOptions(); track option; let index = $index) {
             <option [value]="index">{{ option }}</option>
           }
         </select>
       </div>
       <div class="col-4 pt-1">
-        <span>{{ this.selectOptionsToolTips[this.itemSelected] }}</span>
+        <span>{{ this.selectOptionsToolTips()[this.itemSelected()] }}</span>
       </div>
     </div>
     <div class="row mt-2">
@@ -41,7 +41,7 @@
       </div>
       @if (this.hasError()) {
         <div class="col-auto p-2 bg-danger text-light rounded">
-          {{ this.error }}
+          {{ this.error() }}
         </div>
       }
       @if (this.propertyAlreadyExists()) {
