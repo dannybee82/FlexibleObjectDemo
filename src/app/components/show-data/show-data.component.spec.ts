@@ -1,10 +1,11 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser'
 import { ShowDataComponent } from './show-data.component';
 import { BehaviorSubject } from 'rxjs';
 import { FlexibleObject } from 'src/app/flexible-object/FlexibleObject';
 import { DataRepositoryService } from 'src/app/services/data-repository.service';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('ShowDataComponent', () => {
   let component: ShowDataComponent;
@@ -42,26 +43,30 @@ describe('ShowDataComponent', () => {
     fixture = TestBed.createComponent(ShowDataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    vi.useFakeTimers();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Test show data from FlexibleObject.', fakeAsync(async() => {
+  it('Test show data from FlexibleObject.', async() => {
     listener.next(true);
     //@ts-ignore
     component.show();
+    (component as any).isvisible.set(true);
+    vi.advanceTimersByTime(200);
+
     fixture.detectChanges();
-    tick();
+    vi.advanceTimersByTime(200);
 
-    let dataInPreElement: DebugElement = fixture.debugElement.query(By.css("div"));
+    let dataInPreElement: DebugElement = fixture.debugElement.query(By.css("pre"));
 
-    expect(dataInPreElement.nativeElement.innerText).toContain("_flexibleObject");
-
+    expect((dataInPreElement.nativeElement as HTMLPreElement).textContent).toContain("_flexibleObject");
+    
     for(let i = 0; i < propertyNamesToExpect.length; i++) {
-      expect(dataInPreElement.nativeElement.innerText).toContain(propertyNamesToExpect[i]);
+      expect((dataInPreElement.nativeElement as HTMLPreElement).textContent).toContain(propertyNamesToExpect[i]);
     }
-  }));
+  });
 
 });

@@ -31,7 +31,7 @@ export class AddDataComponent {
     "Object - place properties in JSON-format between braces e.g.: {\"fruit\": \"apple\"}"
   ]);
 
-  protected typeIsValid: boolean = false;
+  protected typeIsValid: WritableSignal<boolean> = signal(false);
   protected propertyAlreadyExists: WritableSignal<boolean> = signal(false);
   protected hasError: WritableSignal<boolean> = signal(false);
   protected error: WritableSignal<string> = signal("");
@@ -45,9 +45,9 @@ export class AddDataComponent {
   submitForm(form: NgForm): void {
     if(form.valid) {
       const finalValue = this.convertValue(this.propertyValue(), this.itemSelected());
-      this.typeIsValid = this.testDataType(finalValue, this.itemSelected());
+      this.typeIsValid.set(this.testDataType(finalValue, this.itemSelected()));
 
-      if(this.typeIsValid) { 
+      if(this.typeIsValid()) { 
         this.propertyAlreadyExists.set( this.dataRepositoryService.hasProperty(this.propertyName()) );        
         this.hasError.set(false);
 

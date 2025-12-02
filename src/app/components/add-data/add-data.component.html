@@ -1,62 +1,86 @@
-<div class="container-fluid">
-  <div class="row">
-    <h3>Add custom properties to Flexible Object</h3>
-  </div>
-  <form #form="ngForm" (ngSubmit)="this.submitForm(form)">
-    <div class="row mt-2">
-      <div class="col-1">
-        <label class="form-label fw-bold mt-1">Propertyname:</label>
+<div class="flex-column flex-1">
+  <h3 class="text-xl font-bold mb-2">Add custom properties to Flexible Object</h3>
+  <form #form="ngForm" (ngSubmit)="this.submitForm(form)" class="w-full">
+    <div class="flex flex-row mb-2">
+      <div class="w-30 flex-none pt-3">
+        <label class="font-bold mt-1">Propertyname:</label>
       </div>
-      <div class="col-3">
-        <input type="text" class="form-control" id="addPropertyName" name="addPropertyName" [(ngModel)]="this.propertyName" required autocomplete="off" [disabled]="this.propertyAlreadyExists()">
-      </div>
+      <div class="w-50 pt-2">
+        <input 
+          type="text" 
+          class="input input-neutral" 
+          id="addPropertyName" 
+          name="addPropertyName" 
+          [(ngModel)]="this.propertyName" 
+          required 
+          autocomplete="off" 
+          [disabled]="this.propertyAlreadyExists()" />
+        </div>
     </div>
-    <div class="row mt-2">
-      <div class="col-1">
-        <label class="form-label fw-bold mt-1">Value(s):</label>
+    <div class="flex flex-row flex-1 mb-1">
+      <div class="w-30 flex-none pt-3">
+        <label class="font-bold mt-1">Value(s):</label>
       </div>
-      <div class="col-3">
-        <input type="text" class="form-control" id="addValue" name="addValue" [(ngModel)]="this.propertyValue" required autocomplete="off" [disabled]="this.propertyAlreadyExists()">
+      <div class="w-50 pt-2 me-1">
+        <input 
+          type="text" 
+          class="input input-neutral" 
+          id="addValue" 
+          name="addValue" 
+          [(ngModel)]="this.propertyValue" 
+          required 
+          autocomplete="off" 
+          [disabled]="this.propertyAlreadyExists()" />
       </div>
-      <div class="col-1">
-        <label class="form-label fw-bold mt-1">Type:</label>
+      <div class="pt-3 ms-2">
+        <label class="font-bold mt-1">Type:</label>
       </div>
-      <div class="col-auto">
-        <select class="form-select" (change)="this.changeOption($any($event).target.selectedIndex)" [disabled]="this.propertyAlreadyExists()">
-          @for (option of this.selectOptions(); track option; let index = $index) {
-            <option [value]="index">{{ option }}</option>
-          }
+      <div class="ms-1 mt-1 me-1 w-35">
+        <select class="select" (change)="this.changeOption($any($event).target.selectedIndex)" [disabled]="this.propertyAlreadyExists()">
+            @for (option of this.selectOptions(); track option; let index = $index) {
+              <option [value]="index">{{ option }}</option>
+            }
         </select>
       </div>
-      <div class="col-4 pt-1">
+      <div class="ms-2 pt-3">
         <span>{{ this.selectOptionsToolTips()[this.itemSelected()] }}</span>
       </div>
     </div>
-    <div class="row mt-2">
-      <div class="col-auto">
-        <button type="submit" class="btn bg-success text-light" [disabled]="this.propertyAlreadyExists()" title="Add Data">
-          <i class="bi bi-plus"></i>
-          <span class="ms-2">Add Data</span>
+    <div class="flex flex-row">
+       <button type="submit" class="btn bg-success text-white" [disabled]="this.propertyAlreadyExists()" title="Add Data">
+         <div class="flex justify-between">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Add Data
+          </div>
         </button>
-      </div>
-      @if (this.hasError()) {
-        <div class="col-auto p-2 bg-danger text-light rounded">
-          {{ this.error() }}
-        </div>
-      }
-      @if (this.propertyAlreadyExists()) {
-        <div class="col-auto">
-          <span class="mt-1 ms-2">Property already exists. Do you want to overwrite this property?</span>
-          <button class="btn btn-danger text-light ms-1 me-1" title="Overwrite" (click)="this.overwrite(true)">
-            <i class="bi bi-pencil-fill"></i>
-            <span class="ms-2">Overwrite</span>
-          </button>
-          <button class="btn btn-secondary text-light ms-1" title="Cancel" (click)="this.overwrite(false)">
-            <i class="bi bi-x"></i>
-            <span class="ms-2">Cancel</span>
-          </button>
-        </div>
-      }
+        @if (this.hasError()) {
+          <div class="flex w-30 p-2 ms-2 bg-red-400 text-white rounded">
+            {{ this.error() }}
+          </div>
+        }   
+        @if (this.propertyAlreadyExists()) {
+          <div>
+            <span class="mt-1 ms-2">Property already exists. Do you want to overwrite this property?</span>
+            <button type="button" class="btn btn-error text-white ms-1 me-1" title="Overwrite" (click)="this.overwrite(true)">
+              <div class="flex justify-between">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                  <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
+                </svg>
+                Overwrite
+              </div>
+            </button>
+            <button type="button" class="btn btn-primary text-white ms-1" title="Cancel" (click)="this.overwrite(false)">
+              <div class="flex justify-between">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+                Cancel
+              </div>
+            </button>
+          </div>
+        }
     </div>
   </form>
 </div>

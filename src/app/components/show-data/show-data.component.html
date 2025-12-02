@@ -1,7 +1,5 @@
 @if (this.isvisible()) {
-  <div class="container-fluid mt-4">
-    <div class="container show-data-container border border-3 border-primary rounded ms-1">
-      <pre class="p-2">{{ this.flexibleObject() | json }}</pre>
-    </div>
+  <div class="flex show-data-container border-3 border-primary rounded ms-1 mt-1 mb-1">
+    <pre class="p-2">{{ this.flexibleObject() | json }}</pre>
   </div>
 }

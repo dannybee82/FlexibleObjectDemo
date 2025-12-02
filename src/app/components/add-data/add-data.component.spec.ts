@@ -1,9 +1,10 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { AddDataComponent } from './add-data.component';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DataRepositoryService } from 'src/app/services/data-repository.service';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('AddDataComponent', () => {
   let component: AddDataComponent;
@@ -28,52 +29,53 @@ describe('AddDataComponent', () => {
     fixture = TestBed.createComponent(AddDataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    vi.useFakeTimers();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('test input field propertyName', fakeAsync(async() => {
+  it('test input field propertyName', async() => {
     const input: DebugElement = fixture.debugElement.query(By.css("input#addPropertyName"));
     input.nativeElement.value = "test";
     input.nativeElement.dispatchEvent(new Event('input'));
 
     fixture.detectChanges();
-    tick();
+    vi.advanceTimersByTime(200);
 
-    expect(component.propertyName).toBe("test");
-  }));
+    expect((component as any).propertyName()).toBe("test");
+  });
 
-  it('test input field addValue', fakeAsync(async() => {
+  it('test input field addValue', async() => {
     const input: DebugElement = fixture.debugElement.query(By.css("input#addValue"));
     input.nativeElement.value = "test";
     input.nativeElement.dispatchEvent(new Event('input'));
 
     fixture.detectChanges();
-    tick();
+    vi.advanceTimersByTime(200);
 
-    expect(component.propertyValue).toBe("test");
-  }));
+    expect((component as any).propertyValue()).toBe("test");
+  });
 
-  it('test select options -> itemSelected value', fakeAsync(async() => {
+  it('test select options -> itemSelected value', async() => {
     const select: DebugElement = fixture.debugElement.query(By.css("select"));
 
     let expectations: number = 0;
 
-    for(let i = 0; i < component.selectOptions.length; i++) {
+    for(let i = 0; i < (component as any).selectOptions.length; i++) {
       select.nativeElement.selectedIndex = i;
       select.nativeElement.dispatchEvent(new Event('change'));
       
       fixture.detectChanges();
-      tick();
+      vi.advanceTimersByTime(200);
 
-      expect(component.itemSelected).toEqual(expectations);
+      expect((component as any).itemSelected).toEqual(expectations);
       expectations++;
     }
-  }));
+  });
 
-  it('test form submit with values', fakeAsync(async() => {
+  it('test form submit with values', async() => {
     //TODO: Fix all below...
     let testPropertyName: string = "test";
 
@@ -111,27 +113,27 @@ describe('AddDataComponent', () => {
       inputPropertyName.nativeElement.dispatchEvent(new Event('input'));
 
       fixture.detectChanges();
-      tick();
+      vi.advanceTimersByTime(200);
 
       const inputPropertyValue: DebugElement = fixture.debugElement.query(By.css("input#addValue"));
       inputPropertyValue.nativeElement.value = testValues[i];
       inputPropertyValue.nativeElement.dispatchEvent(new Event('input'));
 
       fixture.detectChanges();
-      tick();
+      vi.advanceTimersByTime(200);
 
       const select: DebugElement = fixture.debugElement.query(By.css("select"));
       select.nativeElement.selectedIndex = type[i];
       select.nativeElement.dispatchEvent(new Event('change'));
       
       fixture.detectChanges();
-      tick();
+      vi.advanceTimersByTime(200);
 
       const form: DebugElement = fixture.debugElement.query(By.css("form"));
       form.triggerEventHandler('submit', fixture.debugElement.nativeElement);
 
       fixture.detectChanges();
-      tick();
+      vi.advanceTimersByTime(200);
 
       //below: test private methods !!!
       //@ts-ignore
@@ -140,9 +142,9 @@ describe('AddDataComponent', () => {
       //@ts-ignore
       // let testedType = component.testDataType(converted, type[i]);
       //console.log(component.typeIsValid + "::" + testExpectations[i] + "::" + type[i] + "::" + converted + "::" + i);
-      expect(component.typeIsValid).toEqual(testExpectations[i]);      
+      expect(component.typeIsValid()).toEqual(testExpectations[i]);      
     }
-  }));
+  });
 
   it('test private convertValue() method', () => {
     let testStringsValues: any[] =          [undefined,      null, "", "a", "1", "#"];
