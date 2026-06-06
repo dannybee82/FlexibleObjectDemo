@@ -1,4 +1,4 @@
-import { Component, signal, WritableSignal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal, WritableSignal } from '@angular/core';
 import { AddData } from './components/add-data/add-data';
 import { ShowData } from './components/show-data/show-data';
 import { RemoveData } from './components/remove-data/remove-data';
