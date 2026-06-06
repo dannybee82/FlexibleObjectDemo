@@ -3,7 +3,6 @@
   "compileOnSave": false,
   "compilerOptions": {
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,

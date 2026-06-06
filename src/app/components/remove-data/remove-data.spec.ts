@@ -1,15 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DataRepositoryService } from 'src/app/services/data-repository.service';
-import { RemoveDataComponent } from './remove-data.component';
+import { DataRepository } from '../../services/data-repository';
+import { RemoveData } from './remove-data';
 import { BehaviorSubject } from 'rxjs';
-import { FlexibleObject } from 'src/app/flexible-object/FlexibleObject';
+import { FlexibleObject } from '../../flexible-object/FlexibleObject';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('RemoveDataComponent', () => {
-  let component: RemoveDataComponent;
-  let fixture: ComponentFixture<RemoveDataComponent>;
+  let component: RemoveData;
+  let fixture: ComponentFixture<RemoveData>;
 
   let listener: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
@@ -52,10 +52,10 @@ describe('RemoveDataComponent', () => {
   beforeEach(async() => {
     TestBed.configureTestingModule({
       declarations: [],
-      providers: [{provide: DataRepositoryService, useValue: mockDataRepository}],
-      imports: [RemoveDataComponent]
+      providers: [{provide: DataRepository, useValue: mockDataRepository}],
+      imports: [RemoveData]
     }).compileComponents();
-    fixture = TestBed.createComponent(RemoveDataComponent);
+    fixture = TestBed.createComponent(RemoveData);
     component = fixture.componentInstance;
     fixture.detectChanges();
     vi.useFakeTimers()

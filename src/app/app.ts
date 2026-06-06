@@ -1,4 +1,4 @@
-import { Component, signal, WritableSignal } from '@angular/core';
+import { Component, signal, WritableSignal, ChangeDetectionStrategy } from '@angular/core';
 import { AddData } from './components/add-data/add-data';
 import { ShowData } from './components/show-data/show-data';
 import { RemoveData } from './components/remove-data/remove-data';
@@ -10,8 +10,8 @@ import { RemoveData } from './components/remove-data/remove-data';
 		RemoveData,
 	],
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.html'
 })
-export class AppComponent {
+export class App {
 	protected title: WritableSignal<string> = signal('FlexibleObjectDemo');
 }

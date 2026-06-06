@@ -1,14 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 //Flexible object.
 import { FlexibleObject } from '../flexible-object/FlexibleObject';
 import { ALLOWED_DATA_TYPES } from '../flexible-object/FlexibleObjectData';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class DataRepositoryService {
+@Service()
+export class DataRepository {
 
   private _flexibleObject: FlexibleObject;
 

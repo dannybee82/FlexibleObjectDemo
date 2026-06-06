@@ -1,6 +1,6 @@
 import { Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
-import { DataRepositoryService } from 'src/app/services/data-repository.service';
-import { FlexibleObject } from 'src/app/flexible-object/FlexibleObject';
+import { DataRepository } from '../../services/data-repository';
+import { FlexibleObject } from '../../flexible-object/FlexibleObject';
 import { JsonPipe } from '@angular/common';
 
 @Component({
@@ -8,16 +8,16 @@ import { JsonPipe } from '@angular/common';
 		JsonPipe
 	],
   selector: 'app-show-data',
-  templateUrl: './show-data.component.html',
-  styleUrls: ['./show-data.component.scss']
+  templateUrl: './show-data.html',
+  styleUrls: ['./show-data.scss']
 })
-export class ShowDataComponent implements OnInit {
+export class ShowData implements OnInit {
 
   protected isvisible: WritableSignal<boolean> = signal(false);
 
   protected flexibleObject: WritableSignal<FlexibleObject | undefined> = signal(undefined);
   
-  private dataRepositoryService = inject(DataRepositoryService);
+  private dataRepositoryService = inject(DataRepository);
 
   ngOnInit(): void {
     this.dataRepositoryService.getUpdateView().subscribe({
@@ -30,10 +30,11 @@ export class ShowDataComponent implements OnInit {
   }
 
   private show(): void {
+    this.flexibleObject.set(undefined);
     this.flexibleObject.set(this.dataRepositoryService.getFlexibleObject());
 
     if(this.flexibleObject()) {      
-      this.isvisible.set( (this.flexibleObject()!.hasContents()) ? true : false );
+      this.isvisible.set(this.flexibleObject()!.hasContents() ? true : false);
     }    
   }
 

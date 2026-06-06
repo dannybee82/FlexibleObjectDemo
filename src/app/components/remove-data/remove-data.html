@@ -1,8 +1,8 @@
 <div class="flex-column mt-2">
-  @if (this.propertyNames()?.length ?? 0 > 0) {
-    @for (key of this.propertyNames(); track key; let index = $index) {
+  @if (propertyNames()?.length ?? 0 > 0) {
+    @for (key of propertyNames(); track key; let index = $index) {
       <div class="flex flex-row gap-4 justify-start">
-        <button class="btn bg-error text-white" title="Remove Property" (click)="this.remove(index)">
+        <button class="btn bg-error text-white" title="Remove Property" (click)="remove(index)">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
           </svg>
@@ -10,9 +10,9 @@
         <div id="propertyName" class="flex w-70 mt-1 me-1">
             <span class="font-bold me-2">Propertyname:</span>{{ key }}
         </div>
-        @if(this.types()) {
+        @if(types()) {
           <div id="typeName" class="mt-1">
-            <span class="font-bold me-2">Type:</span>{{ (this.types() != undefined && index < this.types()!.length) ? this.types()![index] : "Unknown" }}
+            <span class="font-bold me-2">Type:</span>{{ (types() != undefined && index < types()!.length) ? types()![index] : "Unknown" }}
           </div>
         }
       </div>

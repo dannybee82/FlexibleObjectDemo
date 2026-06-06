@@ -1,6 +1,6 @@
 <div class="flex-column flex-1">
   <h3 class="text-xl font-bold mb-2">Add custom properties to Flexible Object</h3>
-  <form #form="ngForm" (ngSubmit)="this.submitForm(form)" class="w-full">
+  <form #form="ngForm" (ngSubmit)="submitForm(form)" class="w-full">
     <div class="flex flex-row mb-2">
       <div class="w-30 flex-none pt-3">
         <label class="font-bold mt-1">Propertyname:</label>
@@ -11,10 +11,10 @@
           class="input input-neutral" 
           id="addPropertyName" 
           name="addPropertyName" 
-          [(ngModel)]="this.propertyName" 
+          [(ngModel)]="propertyName" 
           required 
           autocomplete="off" 
-          [disabled]="this.propertyAlreadyExists()" />
+          [disabled]="propertyAlreadyExists()" />
         </div>
     </div>
     <div class="flex flex-row flex-1 mb-1">
@@ -27,27 +27,27 @@
           class="input input-neutral" 
           id="addValue" 
           name="addValue" 
-          [(ngModel)]="this.propertyValue" 
+          [(ngModel)]="propertyValue" 
           required 
           autocomplete="off" 
-          [disabled]="this.propertyAlreadyExists()" />
+          [disabled]="propertyAlreadyExists()" />
       </div>
       <div class="pt-3 ms-2">
         <label class="font-bold mt-1">Type:</label>
       </div>
       <div class="ms-1 mt-1 me-1 w-35">
-        <select class="select" (change)="this.changeOption($any($event).target.selectedIndex)" [disabled]="this.propertyAlreadyExists()">
-            @for (option of this.selectOptions(); track option; let index = $index) {
+        <select class="select" (change)="changeOption($any($event).target.selectedIndex)" [disabled]="propertyAlreadyExists()">
+            @for (option of selectOptions(); track option; let index = $index) {
               <option [value]="index">{{ option }}</option>
             }
         </select>
       </div>
       <div class="ms-2 pt-3">
-        <span>{{ this.selectOptionsToolTips()[this.itemSelected()] }}</span>
+        <span>{{ selectOptionsToolTips()[itemSelected()] }}</span>
       </div>
     </div>
     <div class="flex flex-row">
-       <button type="submit" class="btn bg-success text-white" [disabled]="this.propertyAlreadyExists()" title="Add Data">
+       <button type="submit" class="btn bg-success text-white" [disabled]="propertyAlreadyExists()" title="Add Data">
          <div class="flex justify-between">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -55,15 +55,15 @@
             Add Data
           </div>
         </button>
-        @if (this.hasError()) {
+        @if (hasError()) {
           <div class="flex w-30 p-2 ms-2 bg-red-400 text-white rounded">
-            {{ this.error() }}
+            {{ error() }}
           </div>
         }   
-        @if (this.propertyAlreadyExists()) {
+        @if (propertyAlreadyExists()) {
           <div>
             <span class="mt-1 ms-2">Property already exists. Do you want to overwrite this property?</span>
-            <button type="button" class="btn btn-error text-white ms-1 me-1" title="Overwrite" (click)="this.overwrite(true)">
+            <button type="button" class="btn btn-error text-white ms-1 me-1" title="Overwrite" (click)="overwrite(true)">
               <div class="flex justify-between">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                   <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
@@ -71,7 +71,7 @@
                 Overwrite
               </div>
             </button>
-            <button type="button" class="btn btn-primary text-white ms-1" title="Cancel" (click)="this.overwrite(false)">
+            <button type="button" class="btn btn-primary text-white ms-1" title="Cancel" (click)="overwrite(false)">
               <div class="flex justify-between">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />

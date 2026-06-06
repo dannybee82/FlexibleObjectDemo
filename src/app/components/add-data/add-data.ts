@@ -1,6 +1,6 @@
 import { Component, WritableSignal, signal, inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { DataRepositoryService } from 'src/app/services/data-repository.service';
+import { DataRepository } from '../../services/data-repository';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -10,10 +10,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 		ReactiveFormsModule,
 	],
   selector: 'app-add-data',
-  templateUrl: './add-data.component.html',
-  styleUrls: ['./add-data.component.scss']
+  templateUrl: './add-data.html',
+  styleUrls: ['./add-data.scss']
 })
-export class AddDataComponent {
+export class AddData {
 
   protected propertyName: WritableSignal<string> = signal("");
   protected propertyValue: WritableSignal<string> = signal("");
@@ -36,7 +36,7 @@ export class AddDataComponent {
   protected hasError: WritableSignal<boolean> = signal(false);
   protected error: WritableSignal<string> = signal("");
 
-	private dataRepositoryService = inject(DataRepositoryService);
+	private dataRepositoryService = inject(DataRepository);
 
   changeOption(value: number): void {
     this.itemSelected.set(value);

@@ -1,12 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { DataRepositoryService } from './data-repository.service';
+import { DataRepository } from './data-repository';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('DataRepositoryService', () => {
-    let service: DataRepositoryService;
+    let service: DataRepository;
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
-        service = TestBed.inject(DataRepositoryService);
+        service = TestBed.inject(DataRepository);
     });
 
     it('should be created', () => {

@@ -1,19 +1,19 @@
 import { Component, OnInit, inject, WritableSignal, signal } from '@angular/core';
-import { DataRepositoryService } from 'src/app/services/data-repository.service';
-import { FlexibleObject } from 'src/app/flexible-object/FlexibleObject';
+import { DataRepository } from '../../services/data-repository';
+import { FlexibleObject } from '../../flexible-object/FlexibleObject';
 
 @Component({
   selector: 'app-remove-data',
-  templateUrl: './remove-data.component.html',
-  styleUrls: ['./remove-data.component.scss']
+  templateUrl: './remove-data.html',
+  styleUrls: ['./remove-data.scss']
 })
 
-export class RemoveDataComponent implements OnInit {
+export class RemoveData implements OnInit {
 
   protected propertyNames: WritableSignal<string[] | undefined> = signal([]);
   protected types: WritableSignal<string[] | undefined> = signal([]);
 
-  private dataRepositoryService = inject(DataRepositoryService);
+  private dataRepositoryService = inject(DataRepository);
 
   ngOnInit(): void {
     this.dataRepositoryService.getUpdateView().subscribe({

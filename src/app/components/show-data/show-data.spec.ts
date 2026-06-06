@@ -1,15 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser'
-import { ShowDataComponent } from './show-data.component';
+import { ShowData } from './show-data';
 import { BehaviorSubject } from 'rxjs';
-import { FlexibleObject } from 'src/app/flexible-object/FlexibleObject';
-import { DataRepositoryService } from 'src/app/services/data-repository.service';
+import { FlexibleObject } from '../../flexible-object/FlexibleObject';
+import { DataRepository } from '../../services/data-repository';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('ShowDataComponent', () => {
-  let component: ShowDataComponent;
-  let fixture: ComponentFixture<ShowDataComponent>;
+  let component: ShowData;
+  let fixture: ComponentFixture<ShowData>;
 
   let listener: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
@@ -36,11 +36,11 @@ describe('ShowDataComponent', () => {
   beforeEach(async() => {
     TestBed.configureTestingModule({
       declarations: [],
-      providers: [ {provide: DataRepositoryService, useValue: mockDataRepository} ],
-      imports: [ShowDataComponent]
+      providers: [ {provide: DataRepository, useValue: mockDataRepository} ],
+      imports: [ShowData]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ShowDataComponent);
+    fixture = TestBed.createComponent(ShowData);
     component = fixture.componentInstance;
     fixture.detectChanges();
     vi.useFakeTimers();

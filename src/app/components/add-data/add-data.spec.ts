@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { AddDataComponent } from './add-data.component';
+import { AddData } from './add-data';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { DataRepositoryService } from 'src/app/services/data-repository.service';
+import { DataRepository } from '../../services/data-repository';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('AddDataComponent', () => {
-  let component: AddDataComponent;
-  let fixture: ComponentFixture<AddDataComponent>;
+  let component: AddData;
+  let fixture: ComponentFixture<AddData>;
 
   let mockDataRepository = {
     hasProperty: function() {
@@ -22,11 +22,11 @@ describe('AddDataComponent', () => {
   beforeEach(async() => {
     TestBed.configureTestingModule({
       declarations: [],
-      imports: [FormsModule, AddDataComponent],
-      providers:[ { provide: DataRepositoryService, useValue: mockDataRepository } ]
+      imports: [FormsModule, AddData],
+      providers:[ { provide: DataRepository, useValue: mockDataRepository } ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AddDataComponent);
+    fixture = TestBed.createComponent(AddData);
     component = fixture.componentInstance;
     fixture.detectChanges();
     vi.useFakeTimers();
